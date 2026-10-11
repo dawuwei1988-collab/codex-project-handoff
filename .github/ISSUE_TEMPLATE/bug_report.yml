@@ -1,0 +1,41 @@
+name: Bug report / 问题反馈
+description: Report a reproducible issue using synthetic data, not a real migration capsule.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        不要上传真实迁移包、恢复密钥、公司资料、完整聊天或原始报告。
+        Do not attach real capsules, keys, private histories or company assets. Security vulnerabilities should be reported privately; see SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version / 插件版本
+      placeholder: 1.1.0-beta.3
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 环境
+      description: OS, Python version, Codex version, and installation method. No personal paths or account tokens.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Synthetic reproduction / 虚构项目复现步骤
+      description: Steps, expected result and actual result. Do not execute or share unknown capsules.
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Sanitized error / 脱敏错误
+      description: Remove usernames, private paths, keys and project data. Do not paste a full report.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy / 隐私
+      options:
+        - label: I used synthetic data and removed private information / 已使用虚构数据并移除私人信息
+          required: true

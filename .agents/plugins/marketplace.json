@@ -1,0 +1,20 @@
+{
+  "name": "codex-project-handoff-marketplace",
+  "interface": {
+    "displayName": "Codex Project Handoff"
+  },
+  "plugins": [
+    {
+      "name": "codex-project-handoff",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codex-project-handoff"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

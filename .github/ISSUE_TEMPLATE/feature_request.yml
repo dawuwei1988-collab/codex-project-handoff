@@ -1,0 +1,17 @@
+name: Feature request / 功能建议
+description: Describe the use case and expected behavior without private project data.
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Use case / 使用场景
+      description: What migration problem does this solve? Do not include private assets or paths.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Expected behavior / 期望行为
+      description: Include tradeoffs, safety requirements and alternatives if useful.
+    validations:
+      required: true

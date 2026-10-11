@@ -1,0 +1,31 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "codex-project-handoff",
+  "version": "1.1.0-beta.3",
+  "description": "Complete Codex workspace migration with short commands, local package discovery, indexed blocks and guided deployment.",
+  "author": {
+    "name": "Will"
+  },
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Codex一键迁移",
+        "shortDescription": "迁移打包；自动找包并部署恢复。",
+        "longDescription": "@本插件 迁移：完整打包项目、工作记录、工作流配置和关联资产，自动验证并生成随包移动的部署入口。@本插件 部署：识别本地迁移包、检查磁盘，让用户选择总文件夹位置和名称，再恢复和校验。支持分块去重、智能压缩、断点继续、独立增量包及可选加密。",
+        "developerName": "Will",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "defaultPrompt": [
+          "迁移",
+          "部署",
+          "检查迁移包"
+        ],
+        "brandColor": "#2563EB"
+      }
+    }
+  }
+}

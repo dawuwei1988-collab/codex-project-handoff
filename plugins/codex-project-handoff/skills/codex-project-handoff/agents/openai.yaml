@@ -1,0 +1,6 @@
+interface:
+  display_name: "Codex一键迁移"
+  short_description: "迁移完整工作内容，部署时自动找包并让用户选择总目录，支持离线恢复。"
+  default_prompt: "使用 $codex-project-handoff，按我的迁移或部署指令执行。"
+policy:
+  allow_implicit_invocation: true

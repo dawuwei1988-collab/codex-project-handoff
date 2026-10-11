@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install reference crypto for cross-platform tests
+        run: python -m pip install cryptography
+      - name: Run unit tests
+        env:
+          PYTHONUTF8: "1"
+        run: python -m unittest discover -s tests -v
+      - name: Guard public source files
+        env:
+          PYTHONUTF8: "1"
+        run: python tests/check_publication.py
+      - name: Compile exporter
+        run: >-
+          python -m compileall -q
+          plugins/codex-project-handoff/skills/codex-project-handoff/scripts tests
