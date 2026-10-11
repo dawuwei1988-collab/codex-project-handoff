@@ -31,7 +31,7 @@ import migration_support as support
 import migration_crypto as crypto
 
 
-VERSION = "1.1.0-beta.3"
+VERSION = "1.1.0-beta.4"
 SCHEMA_VERSION = 3
 FORMAT_NAME = "codex-project-migration"
 BUFFER_SIZE = 1024 * 1024

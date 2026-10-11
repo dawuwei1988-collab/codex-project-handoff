@@ -2,7 +2,7 @@
 
 [中文说明](README.zh-CN.md) · [Install / 安装](docs/INSTALL.md) · [FAQ](docs/FAQ.md) · [Security](SECURITY.md)
 
-Version 1.1.0-beta.3, a Windows-first public beta. This is a community plugin,
+Version 1.1.0-beta.4, a Windows-first public beta. This is a community plugin,
 not an official OpenAI product. Keep the old computer and an independent backup
 until restored files and actual project execution have been verified.
 
@@ -58,7 +58,8 @@ Coverage gaps are reported. This is not a promise to clone the desktop sidebar o
 External assets hidden in unparseable outputs, machine-specific dependencies and Git worktree metadata
 can require follow-up. Runtime checks and path adaptation reports make those limitations inspectable.
 
-The initial local Windows/Python 3.12 acceptance record passed 38 isolated tests.
+The current beta.4 local Windows/Python 3.12 acceptance passed 44 isolated tests
+(the earlier beta.3 baseline passed 38).
 See [validation scope and synthetic benchmarks](docs/VALIDATION.md); these do not establish
 universal transfer speed or a complete live two-computer UI flow. GitHub Actions is configured
 for Windows/Ubuntu and Python 3.10/3.12; consult the actual run status.

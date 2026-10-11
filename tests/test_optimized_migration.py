@@ -343,6 +343,20 @@ class OptimizedTests(unittest.TestCase):
         completed = subprocess.run([sys.executable, "-X", "utf8", str(self.package), "verify", "--key-file", str(key)], capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(completed.returncode, 0, completed.stderr)
 
+    def test_reference_crypto_backend_authentication_error_is_normalized(self):
+        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        key, nonce, data, aad = bytes(range(32)), bytes(range(12)), b"synthetic test data", b"metadata"
+        cipher = object.__new__(crypto.Gcm)
+        cipher.native, cipher.crypto = None, AESGCM(key)
+        encrypted = cipher.encrypt(nonce, data, aad)
+        self.assertEqual(cipher.decrypt(nonce, encrypted, aad), data)
+        for altered, associated in [(encrypted[:-1] + bytes([encrypted[-1] ^ 1]), aad), (encrypted, b"wrong aad")]:
+            with self.assertRaisesRegex(ValueError, "authentication failed"):
+                cipher.decrypt(nonce, altered, associated)
+        cipher.crypto = AESGCM(bytes(reversed(key)))
+        with self.assertRaisesRegex(ValueError, "authentication failed"):
+            cipher.decrypt(nonce, encrypted, aad)
+
     def test_schema_two_package_remains_readable(self):
         data = b"legacy file\n"
         source = self.source

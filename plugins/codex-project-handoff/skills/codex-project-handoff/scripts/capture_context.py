@@ -27,7 +27,7 @@ class Rpc:
         self.reader = threading.Thread(target=read, daemon=True)
         self.reader.start()
         try:
-            self.call("initialize", {"clientInfo": {"name": "codex-project-handoff", "version": "1.1.0-beta.3"}, "capabilities": {"experimentalApi": True}})
+            self.call("initialize", {"clientInfo": {"name": "codex-project-handoff", "version": "1.1.0-beta.4"}, "capabilities": {"experimentalApi": True}})
             self.notify("initialized", {})
         except BaseException:
             self.close()

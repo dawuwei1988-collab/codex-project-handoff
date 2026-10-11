@@ -1,6 +1,6 @@
 # Migration capsule format
 
-Tool 1.1.0-beta.3 exports schema 3 and reads schemas 2 and 3.
+Tool 1.1.0-beta.4 exports schema 3 and reads schemas 2 and 3.
 
 ## Plain schema 3
 

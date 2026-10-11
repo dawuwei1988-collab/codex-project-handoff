@@ -1,6 +1,9 @@
-# Codex Project Handoff 1.1.0-beta.3
+# Codex Project Handoff 1.1.0-beta.4
 
 Windows 优先的社区测试版，不是 OpenAI 官方产品。请保留旧电脑和独立备份直到迁移验收完成。
+
+修复首次 CI 发现的非 Windows 错误密钥/篡改认证异常处理，并增加独立后端回归测试。
+错误数据仍然拒绝恢复；schema 3 格式不变，继续读取 schema 2 旧包。
 
 ## 安装与使用
 

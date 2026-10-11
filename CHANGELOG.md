@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0-beta.4
+
+- Fix non-Windows AES-GCM wrong-key/tamper errors to return a clear authentication failure
+  instead of an uncaught `InvalidTag`; data authentication remains mandatory.
+- Add a reference-backend regression test that runs on Windows as well as Linux.
+- First public prerelease candidate; beta.3 was the earlier local acceptance baseline.
+- Schema 3 is unchanged; schema 2 reading remains supported.
+
 ## 1.1.0-beta.3
 
 Windows-first beta, not a stable release or an official OpenAI product.

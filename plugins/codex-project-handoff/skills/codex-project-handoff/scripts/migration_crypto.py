@@ -91,7 +91,13 @@ class Gcm:
         return self.native.transform(data, nonce, aad) if self.native else self.crypto.encrypt(nonce, data, aad)
 
     def decrypt(self, nonce, data, aad):
-        return self.native.transform(data, nonce, aad, True) if self.native else self.crypto.decrypt(nonce, data, aad)
+        if self.native:
+            return self.native.transform(data, nonce, aad, True)
+        from cryptography.exceptions import InvalidTag
+        try:
+            return self.crypto.decrypt(nonce, data, aad)
+        except InvalidTag as exc:
+            raise ValueError("AES-GCM authentication failed: wrong recovery key or damaged package") from exc
 
     def close(self):
         if self.native:

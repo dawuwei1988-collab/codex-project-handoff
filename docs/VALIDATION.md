@@ -1,5 +1,8 @@
 # 验证范围 / Validation scope
 
+当前 1.1.0-beta.4：本地 Windows / Python 3.12.14 的 44 项隔离测试全部通过，
+包括新增公开文件检查与跨平台认证异常回归。GitHub 矩阵结果以实际 Actions 记录为准。
+
 1.1.0-beta.3 的本地 Windows / Python 3.12.14 隔离验收：38 项通过，0 失败、0 错误、0 跳过。
 覆盖文件往返、新旧包、去重、错误密钥/篡改拒绝、中断续作、回滚、找包歧义和便携安装。
 发布准备阶段另加公开文件检查测试；以具体 Release 验收记录为准。
@@ -35,6 +38,7 @@ CI 配置 Windows/Ubuntu × Python 3.10/3.12；Python 3.10 的 TOML 依赖发现
 手动记录须注明版本、平台、步骤、实际结果和残留问题；不包含私人迁移数据。
 验收步骤见 [MANUAL-TEST](../MANUAL-TEST.zh-CN.md)。
 
-English: 38 initial local Windows/Python 3.12 tests passed. CI and live two-computer workflows
+English: 44 current beta.4 local Windows/Python 3.12 tests passed; the initial beta.3 baseline had 38.
+CI and live two-computer workflows
 are separate evidence. Benchmarks are synthetic, single-run, local-only measurements; do not
 interpret them as a universal speed or platform-compatibility guarantee.

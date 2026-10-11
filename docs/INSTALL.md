@@ -1,17 +1,17 @@
 # 安装 / Installation
 
-当前版本：1.1.0-beta.3。两台电脑都需要安装；GitHub 发布不等于插件已进入官方公共插件目录。
+当前版本：1.1.0-beta.4。两台电脑都需要安装；GitHub 发布不等于插件已进入官方公共插件目录。
 需要本地 Codex、Python 3.10+（建议 3.11+）；Git 方式另需 Git。
 
 ## A. 便携安装包（推荐 Windows 用户）
 
 1. 从 [GitHub Releases](https://github.com/dawuwei1988-collab/codex-project-handoff/releases)
-   下载 `codex-project-handoff-1.1.0-beta.3-installer.pyz` 和 `SHA256SUMS.txt`。
+   下载 `codex-project-handoff-1.1.0-beta.4-installer.pyz` 和 `SHA256SUMS.txt`。
    此包只含插件代码，不含作者的项目或聊天资料。不要用来源不明的安装包。
 2. Windows PowerShell 可先核对下载文件的哈希：
 
    ```powershell
-   Get-FileHash -Algorithm SHA256 -LiteralPath '.\codex-project-handoff-1.1.0-beta.3-installer.pyz'
+   Get-FileHash -Algorithm SHA256 -LiteralPath '.\codex-project-handoff-1.1.0-beta.4-installer.pyz'
    ```
 
    与该 Release 中 `SHA256SUMS.txt` 的同名记录对照。这个步骤能发现下载损坏，不能替代来源信任。
@@ -25,10 +25,10 @@
    也可自己用可用的 Python 执行：
 
    ```powershell
-   python '.\codex-project-handoff-1.1.0-beta.3-installer.pyz' inspect
-   python '.\codex-project-handoff-1.1.0-beta.3-installer.pyz' verify
-   python '.\codex-project-handoff-1.1.0-beta.3-installer.pyz' install --dry-run
-   python '.\codex-project-handoff-1.1.0-beta.3-installer.pyz' install
+   python '.\codex-project-handoff-1.1.0-beta.4-installer.pyz' inspect
+   python '.\codex-project-handoff-1.1.0-beta.4-installer.pyz' verify
+   python '.\codex-project-handoff-1.1.0-beta.4-installer.pyz' install --dry-run
+   python '.\codex-project-handoff-1.1.0-beta.4-installer.pyz' install
    ```
 
    如果 `python` 不可用，可以让 Codex 查找其捆绑 Python 或自己安装 Python。
@@ -49,7 +49,7 @@ codex plugin add codex-project-handoff@codex-project-handoff-marketplace
 ```
 
 也可注册后重启桌面应用，在插件目录中选择对应市场并安装，再新建聊天。
-想固定正式发布的代码，可把 `--ref main` 换成存在的发布标签，例如 `v1.1.0-beta.3`。
+想固定已发布的代码，可把 `--ref main` 换成存在的发布标签，例如 `v1.1.0-beta.4`。
 命令是否可用取决于本机 Codex 版本；可先运行 `codex plugin --help`。
 
 安装方式依据 [OpenAI 官方插件打包与市场说明](https://developers.openai.com/plugins/build/plugins)。
