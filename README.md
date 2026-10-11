@@ -58,7 +58,7 @@ Coverage gaps are reported. This is not a promise to clone the desktop sidebar o
 External assets hidden in unparseable outputs, machine-specific dependencies and Git worktree metadata
 can require follow-up. Runtime checks and path adaptation reports make those limitations inspectable.
 
-The current beta.4 local Windows/Python 3.12 acceptance passed 44 isolated tests
+The current beta.4 local Windows/Python 3.12 acceptance passed 46 isolated tests
 (the earlier beta.3 baseline passed 38).
 See [validation scope and synthetic benchmarks](docs/VALIDATION.md); these do not establish
 universal transfer speed or a complete live two-computer UI flow. GitHub Actions is configured

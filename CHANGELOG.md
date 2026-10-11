@@ -5,6 +5,8 @@
 - Fix non-Windows AES-GCM wrong-key/tamper errors to return a clear authentication failure
   instead of an uncaught `InvalidTag`; data authentication remains mandatory.
 - Add a reference-backend regression test that runs on Windows as well as Linux.
+- Normalize native restore mappings and preserve explicitly selected source aliases for
+  separate configuration adaptation; cover Windows short-path/long-path equivalence.
 - First public prerelease candidate; beta.3 was the earlier local acceptance baseline.
 - Schema 3 is unchanged; schema 2 reading remains supported.
 

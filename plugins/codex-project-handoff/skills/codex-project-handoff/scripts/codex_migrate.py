@@ -133,7 +133,8 @@ def parse_project_specs(args: argparse.Namespace) -> list[dict[str, object]]:
     by_path: dict[str, dict[str, object]] = {}
     ordered: list[str] = []
     for spec in specs:
-        path = Path(str(spec["path"])).expanduser().resolve()
+        input_path = Path(str(spec["path"])).expanduser().absolute()
+        path = input_path.resolve()
         if not path.is_dir() and not path.is_file():
             raise MigrationError(f"selected source does not exist: {path}")
         if spec.get("category", "projects") not in {"projects", "resources", "environment"}:
@@ -145,10 +146,13 @@ def parse_project_specs(args: argparse.Namespace) -> list[dict[str, object]]:
             ordered.append(key)
             by_path[key] = dict(spec)
             by_path[key]["path"] = str(path)
+            by_path[key]["originalAliases"] = []
         else:
             by_path[key].update(
-                {k: v for k, v in spec.items() if k != "path"}
+                {k: v for k, v in spec.items() if k not in {"path", "originalAliases"}}
             )
+        if str(input_path) != str(path) and str(input_path) not in by_path[key]["originalAliases"]:
+            by_path[key]["originalAliases"].append(str(input_path))
     return [by_path[key] for key in ordered]
 
 
@@ -175,10 +179,23 @@ def build_project_and_root_records(
         root_id = stable_id("root", str(root))
         spec = next(item for item in specs if Path(str(item["path"])) == root)
         root_ids[normalized_path_key(root)] = root_id
+        aliases: set[str] = set()
+        for item in specs:
+            item_path = Path(str(item["path"]))
+            if not is_relative_to(item_path, root):
+                continue
+            relative = item_path.relative_to(root)
+            for value in item.get("originalAliases", []):
+                alias = Path(value)
+                for _ in relative.parts:
+                    alias = alias.parent
+                if str(alias) != str(root) and alias.resolve() == root:
+                    aliases.add(str(alias))
         root_records.append(
             {
                 "id": root_id,
                 "originalPath": str(root),
+                "originalAliases": sorted(aliases),
                 "name": str(spec.get("name") or root.name),
                 "category": spec.get("category", "projects"),
                 "sourceType": "directory" if root.is_dir() else "file",
@@ -1028,8 +1045,8 @@ def parse_mappings(values: Sequence[str]) -> list[tuple[Path, Path]]:
         old_value, new_value = value.split("=", 1)
         if not old_value or not new_value:
             raise MigrationError(f"invalid path mapping: {value}")
-        old = Path(old_value).expanduser()
-        new = Path(new_value).expanduser()
+        old = Path(old_value).expanduser().resolve()
+        new = Path(new_value).expanduser().resolve()
         mappings.append((old, new))
     return sorted(mappings, key=lambda pair: len(pair[0].parts), reverse=True)
 
@@ -1039,7 +1056,7 @@ def mapped_target(
     mappings: Sequence[tuple[Path, Path]],
     use_original_paths: bool,
 ) -> Path:
-    source = Path(original)
+    source = Path(original).expanduser().resolve()
     for old, new in mappings:
         try:
             relative = source.relative_to(old)

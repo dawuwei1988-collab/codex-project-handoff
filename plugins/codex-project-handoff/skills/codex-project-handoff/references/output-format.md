@@ -27,6 +27,9 @@ unsafe paths, missing blocks and entries through file/link ancestors are rejecte
 Project nesting is stored once under the nearest selected ancestor. Roots also distinguish projects,
 external resources and original environment configuration. Selected standalone resources are represented
 as one-file roots, so unrelated parent directories are not copied.
+Roots may carry optional originalAliases for explicitly selected equivalent source paths;
+configuration adaptation uses these alongside the canonical originalPath. Older schemas/readers
+do not require this field. Source files and original configuration remain unmodified.
 
 ## Encrypted envelope
 

@@ -404,7 +404,12 @@ def remap_link(target: str, mappings: list[tuple[Path, Path]]) -> str:
 
 def prepare_environment_adaptations(plan: list[dict], output: Path) -> dict:
     """Write adapted copies, preserving original configuration bytes."""
-    substitutions = [(str(item["root"]["originalPath"]), str(item["target"]) + (os.sep + Path(item["root"]["originalPath"]).name if item["root"].get("sourceType") == "file" else "")) for item in plan]
+    substitutions = []
+    for item in plan:
+        root = item["root"]
+        new = str(item["target"]) + (os.sep + Path(root["originalPath"]).name if root.get("sourceType") == "file" else "")
+        for old in [root["originalPath"], *root.get("originalAliases", [])]:
+            substitutions.append((str(old), new))
     substitutions.sort(key=lambda pair: len(pair[0]), reverse=True)
     changes = []
     for item in plan:

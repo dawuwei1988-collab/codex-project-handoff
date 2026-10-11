@@ -53,6 +53,29 @@ class OptimizedTests(unittest.TestCase):
         parsed = engine.build_parser().parse_args(["部署"])
         self.assertIs(parsed.handler, engine.deploy_capsule)
 
+    def test_restore_mapping_normalizes_existing_native_alias(self):
+        alias = self.source.parent / ".." / self.source.parent.name
+        target = self.root / "mapped"
+        mappings = engine.parse_mappings([f"{alias}={target}"])
+        self.assertEqual(engine.mapped_target(str(self.source.resolve()), mappings, False), (target / self.source.name).resolve())
+
+    def test_source_alias_is_preserved_for_configuration_adaptation(self):
+        alias = self.source.parent / ".." / self.source.parent.name / self.source.name
+        home = self.root / "config-home"
+        home.mkdir()
+        config = home / "config.toml"
+        config.write_text('cwd = "' + str(alias).replace("\\", "\\\\") + '"\n', encoding="utf-8")
+        self.assertEqual(self.call("pack", "--project", alias, "--include-codex-home", home, "--output", self.package), 0)
+        root = next(item for item in self.manifest()["roots"] if item["category"] == "projects")
+        self.assertIn(str(alias.absolute()), root["originalAliases"])
+        self.assertEqual(self.deploy(), 0)
+        total = self.root / "new" / "完整工作空间"
+        report = json.loads((total / "迁移说明" / "ENVIRONMENT-ADAPTATIONS.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(report["files"]), 1)
+        adapted = Path(report["files"][0]["adapted"]).read_text(encoding="utf-8").replace("\\\\", "\\")
+        self.assertIn(str((total / "项目" / self.source.name).resolve()), adapted)
+        self.assertEqual((total / "环境配置" / "原始" / "codex-config.toml" / "config.toml").read_bytes(), config.read_bytes())
+
     def test_total_directory_contains_projects_resources_environment_and_reports(self):
         asset = self.root / "generated.png"
         asset.write_bytes(bytes(range(256)) * 30)
@@ -74,7 +97,7 @@ class OptimizedTests(unittest.TestCase):
         self.assertTrue((total / "迁移说明" / "RESTORE-CONTEXT.md").is_file())
         adaptations = json.loads((total / "迁移说明" / "ENVIRONMENT-ADAPTATIONS.json").read_text(encoding="utf-8"))
         self.assertEqual(len(adaptations["files"]), 1)
-        self.assertIn(str(total / "项目" / self.source.name), Path(adaptations["files"][0]["adapted"]).read_text(encoding="utf-8").replace("\\\\", "\\"))
+        self.assertIn(str((total / "项目" / self.source.name).resolve()), Path(adaptations["files"][0]["adapted"]).read_text(encoding="utf-8").replace("\\\\", "\\"))
 
     @unittest.skipIf(sys.version_info < (3, 11), "TOML dependency parsing uses bundled Python 3.11+")
     def test_configured_mcp_server_directory_is_included(self):
@@ -88,7 +111,7 @@ class OptimizedTests(unittest.TestCase):
         path = str(script).replace("\\", "\\\\")
         (home / "config.toml").write_text('[mcp_servers.local]\ncommand = "python"\nargs = ["' + path + '"]\n', encoding="utf-8")
         items = support.inventory_environment(home)
-        self.assertTrue(any(item["path"] == str(service) for item in items))
+        self.assertTrue(any(Path(item["path"]).resolve() == service.resolve() for item in items))
 
     def test_embedded_tool_json_asset_reference_is_discovered(self):
         asset = self.root / "external.png"
@@ -99,7 +122,7 @@ class OptimizedTests(unittest.TestCase):
         with contextlib.redirect_stdout(capture):
             result = engine.main(["inventory", "--project", str(self.source), "--codex-context", str(context)])
         self.assertEqual(result, 0)
-        self.assertTrue(any(item["path"] == str(asset) for item in json.loads(capture.getvalue())["projects"]))
+        self.assertTrue(any(Path(item["path"]).resolve() == asset.resolve() for item in json.loads(capture.getvalue())["projects"]))
 
     def test_report_failure_can_resume_after_project_commit(self):
         self.export()
@@ -140,7 +163,7 @@ class OptimizedTests(unittest.TestCase):
             archive.writestr("__main__.py", "raise RuntimeError('must not execute')")
         result = support.discover_packages([self.root], max_depth=0)
         self.assertEqual(result["status"], "unique")
-        self.assertEqual(result["candidates"][0]["path"], str(self.package))
+        self.assertEqual(Path(result["candidates"][0]["path"]).resolve(), self.package.resolve())
         shutil.copyfile(self.package, self.root / "copy.pyz")
         self.assertEqual(len(support.discover_packages([self.root], 0)["candidates"]), 1)
 
